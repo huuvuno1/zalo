@@ -7,7 +7,8 @@
             <taskbar-detail :conversations="conversations" />
 
             <!-- right container -->
-            <chat-container />
+            <chat-container v-if="!showIntro"/>
+            <introduce v-else />
         </div>
 </template>
 
@@ -15,20 +16,26 @@
 import Taskbar from '@/components/Taskbar.vue'
 import TaskbarDetail from '@/components/TaskbarDetail.vue'
 import ChatContainer from '@/components/ChatContainer.vue'
+import Introduce from '@/components/Introduce.vue'
 
 export default {
   name: 'Home',
   components: {
     Taskbar,
     TaskbarDetail,
-    ChatContainer
+    ChatContainer,
+    Introduce
   },
   data() {
     return {
+      showIntro: true,
       conversations: []
     }
   },
   mounted() {
+    console.log(this.$route.params.id)
+    this.showIntro = this.$route.params.id ? false : true
+
     this.conversations = [
       {
         id: 1,
@@ -145,7 +152,6 @@ export default {
 <style lang="scss">
 ::-webkit-scrollbar {
     width: 7px;
-    
     position: absolute;
   }
   
@@ -154,9 +160,14 @@ export default {
     background: transparent; 
   }
    
+  div:hover::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+  }
+  
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: #888;
+    background: rgb(223, 223, 223);
     border-radius: 4px;
   }
   
@@ -178,12 +189,12 @@ export default {
   }
 
   #list__message {
-    height: calc(100vh - 56px);
+    // height: calc(100vh - 56px);
   }
 
   @media (min-width: 768px) {
     #list__message {
-        height: calc(100vh - 173px);
+        // height: calc(100vh - 173px);
     }
 
     #txtMessage {
@@ -204,6 +215,8 @@ export default {
     div {
         max-width: 70%;
         width: fit-content;
+        white-space: pre-wrap;
+        word-wrap: break-word;
     }
 }
 

@@ -12,9 +12,14 @@
 </template>
 
 <script>
+import { scrollMessageHistory } from '../utils/Scroll'
+
 export default {
     name: 'SendMessage',
-    props: ['chat']
+    props: ['chat'],
+    mounted() {
+        scrollMessageHistory();
+    }
 }
 </script>
 

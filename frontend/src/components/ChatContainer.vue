@@ -39,48 +39,59 @@
 
         <!-- bottom -->
         <!-- message history -->
-        <div class="bg-gradient-to-b from-gray-300 to-gray-500 h-screen overflow-y-scroll overflow-x-hidden " id="list__message">
+        <!-- <div class="bg-gradient-to-b from-gray-300 to-gray-500 h-screen overflow-y-scroll overflow-x-hidden " id="list__message">
 
             <div class="flex" :class="[chat.sender == 'me' ? 'flex-row-reverse' : '']" v-for="chat in chats" :key="chat.sender">
                 <send-message v-if="chat.sender == 'me'" :chat='chat' />
                 <receive-message v-else :chat='chat' />
             </div>
+        </div> -->
+        <div class="overflow-y-scroll overflow-x-hidden bg-gradient-to-b from-gray-300 to-gray-500 pb-2" id="my__wrap--history">
+            <div class="flex flex-col justify-end " id="list__message">
+                <div class="flex" :class="[chat.sender == 'me' ? 'flex-row-reverse' : '']" v-for="chat in chats" :key="chat.sender">
+                    <send-message v-if="chat.sender == 'me'" :chat='chat' />
+                    <receive-message v-else :chat='chat' />
+                </div>
+            </div>
         </div>
-
+        
         <!-- input send -->
-        <div class="fixed bottom-0 bg-white w-full my__frame--chat">
-            <!-- option send -->
-            <div class="flex items-center justify-start p-2 border border-gray-200">
-                <i class='bx bxs-file text-2xl mx-2 text-purple-500 cursor-pointer'></i>
-                <i class='bx bx-image-alt text-2xl mx-2 text-green-500 cursor-pointer' ></i>
-                <i class='bx bxs-wink-smile ml-1 text-2xl text-yellow-500 cursor-pointer border border-gray-300 rounded-full' ></i>
-
-            </div>
-            <!-- input -->
-            <div class="flex items-center justify-between p-3">
-                <div contenteditable="true" class=" outline-none  overflow-y-scroll" id="txtMessage"></div>
-                
-                <!-- <div class="flex justify-between"> -->
-                    <i class='bx bxs-send text-blue-700 text-2xl cursor-pointer' ></i>
-                <!-- </div> -->
-                
-            </div>
-        </div>
+        <typing-box @send="addE($event)"/>
     </div>
 </template>
 
 <script>
 import ReceiveMessage from './ReceiveMessage.vue'
 import SendMessage from './SendMessage.vue'
+import TypingBox from './TypingBox.vue'
+
+
 export default {
     name: 'ChatContainer',
     components: {
         ReceiveMessage,
-        SendMessage
+        SendMessage,
+        TypingBox
     },
     data() {
         return {
             chats: []
+        }
+    },
+    methods: {
+        addE(data) {
+            console.log("send mess", data)
+            let newD = {
+                    avatar: 'https://i.pinimg.com/736x/fa/02/02/fa0202572e8aa734cedb154c413a4846.jpg',
+                    sender: 'me',
+                    messages: [
+                        {
+                            content: data, 
+                            timestamp: '4h00'
+                        }
+                    ]
+                }
+            this.chats.push(newD)
         }
     },
     mounted() {
@@ -203,5 +214,20 @@ export default {
 </script>
 
 <style>
+#my__wrap--history {
+    height: calc(100vh - 160px);
+}
 
+#list__message {
+    min-height: calc(100vh - 56px);
+}
+
+@media (min-width: 768px) {
+    #my__wrap--history {
+        height: calc(100vh - 170px);
+    }
+    #list__message {
+        min-height: calc(100vh - 56px);;
+    }
+}
 </style>
