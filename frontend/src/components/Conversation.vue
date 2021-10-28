@@ -20,10 +20,10 @@
 
 <script>
 export default {
-  name: 'ConversationComponent',
+  name: 'Conversation',
   props: ['conversation'],
   mounted() {
-    
+    console.log("mou")
   }
 }
 </script>
