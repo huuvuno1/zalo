@@ -1,18 +1,19 @@
 <template>
     <!-- wraphome -->
         <div class="wrap__home flex">
-            <taskbar />
+            <taskbar :class="[isBack ? 'block' : 'hidden']"/>
 
             <!-- task detail -->
-            <taskbar-detail :conversations="conversations" />
+            <taskbar-detail :conversations="conversations" :class="[isBack ? 'block' : 'hidden']"/>
 
             <!-- right container -->
-            <chat-container v-if="!showIntro"/>
+            <chat-container v-if="!showIntro" :class="[isBack ? 'hidden' : 'block']"/>
             <introduce v-else />
         </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Taskbar from '@/components/Taskbar.vue'
 import TaskbarDetail from '@/components/TaskbarDetail.vue'
 import ChatContainer from '@/components/ChatContainer.vue'
@@ -20,6 +21,7 @@ import Introduce from '@/components/Introduce.vue'
 
 export default {
   name: 'Home',
+  computed: mapState(['isBack']),
   components: {
     Taskbar,
     TaskbarDetail,
@@ -236,5 +238,7 @@ export default {
   color: white; 
   font-weight: bold;
 }
-
+* {
+  -webkit-tap-highlight-color: transparent;
+}
 </style>

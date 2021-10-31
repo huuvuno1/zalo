@@ -14,7 +14,7 @@
         <div contenteditable="true" class=" outline-none  overflow-y-scroll" id="txtMessage" @keydown="onTyping"></div>
         
         <!-- <div class="flex justify-between"> -->
-        <i class='bx bxs-send text-blue-700 text-2xl cursor-pointer' ></i>
+        <i class='bx bxs-send text-blue-700 text-2xl cursor-pointer' @click="sendChat" ></i>
         <!-- </div> -->
         
     </div>
@@ -43,22 +43,13 @@ export default {
           }
           
       }
-      // if (!e.shiftKey && e.key === 'Enter' && this.textChat) {
-      //   e.preventDefault()
-      //   console.log("vl", this.textChat)
-      //   if (this.textChat.trim().replace('\n', '') !== '') {
-      //     e.target.innerText = ''
-      //     // send chat
-      //     console.log("send", this.textChat)
-          
-      //   }
-        
-      // }
-      // else {
-      //     scrollMessageHistory()
-      //     this.textChat = e.target.innerText + e.key;
-      // }
-      
+    }, 
+    sendChat() {
+      let inp = document.getElementById('txtMessage');
+      if (inp.innerText.trim() != '') {
+        this.$emit('send', inp.innerText)
+        inp.innerHTML = ''
+      }
     }
   }
 }

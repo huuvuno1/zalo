@@ -1,11 +1,11 @@
 <template>
-    <div class=" flex-1 relative">
+    <div class=" flex-1 relative h-screen bg-gradient-to-b from-gray-300 to-gray-500 md:block">
         <!-- top -->
         <div class="h-14 md:h-16 border-b border-gray-200 flex items-center justify-between bg-white">
             <!-- left include back and name -->
             <div class="flex items-center">
                 <!-- back -->
-                <div class="w-6 ml-2 cursor-pointer md:hidden">
+                <div class="w-6 ml-2 cursor-pointer md:hidden" @click="changeBack">
                     <i class='bx bx-arrow-back font-bold text-2xl'></i>
                 </div>
 
@@ -41,15 +41,15 @@
         <!-- message history -->
         <!-- <div class="bg-gradient-to-b from-gray-300 to-gray-500 h-screen overflow-y-scroll overflow-x-hidden " id="list__message">
 
-            <div class="flex" :class="[chat.sender == 'me' ? 'flex-row-reverse' : '']" v-for="chat in chats" :key="chat.sender">
+            <div class="flex" :class="[chat.sender == 'me' ? 'flex-row-reverse' : '']" v-for="chat in chatHistory" :key="chat.sender">
                 <send-message v-if="chat.sender == 'me'" :chat='chat' />
                 <receive-message v-else :chat='chat' />
             </div>
         </div> -->
-        <div class="overflow-y-scroll overflow-x-hidden bg-gradient-to-b from-gray-300 to-gray-500 pb-2" id="my__wrap--history">
-            <div class="flex flex-col justify-end " id="list__message">
-                <div class="flex" :class="[chat.sender == 'me' ? 'flex-row-reverse' : '']" v-for="chat in chats" :key="chat.sender">
-                    <send-message v-if="chat.sender == 'me'" :chat='chat' />
+        <div class="overflow-y-scroll overflow-x-hidden pb-2" id="my__wrap--history">
+            <div class="flex flex-col-reverse justify-end" id="list__message">
+                <div class="flex" :class="[chat.sender == 'me' ? 'flex-row-reverse' : '']" v-for="chat in chatHistory" :key="chat.sender">
+                    <send-message v-if="chat.sender == 'me'" :chat='chat'/>
                     <receive-message v-else :chat='chat' />
                 </div>
             </div>
@@ -61,6 +61,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
 import ReceiveMessage from './ReceiveMessage.vue'
 import SendMessage from './SendMessage.vue'
 import TypingBox from './TypingBox.vue'
@@ -75,9 +76,10 @@ export default {
     },
     data() {
         return {
-            chats: []
+            //chatHistory: []
         }
     },
+    computed: mapState(['chatHistory']),
     methods: {
         addE(data) {
             console.log("send mess", data)
@@ -91,131 +93,19 @@ export default {
                         }
                     ]
                 }
-            this.chats.push(newD)
-        }
+            this.chatHistory.unshift(newD)
+        },
+        ...mapMutations(['changeBack'])
     },
     mounted() {
-        this.chats = [
-                {
-                    avatar: 'https://i.pinimg.com/736x/fa/02/02/fa0202572e8aa734cedb154c413a4846.jpg',
-                    sender: 'user1',
-                    messages: [
-                        {
-                            content: 'Hello World ok', 
-                            timestamp: '4h00'
-                        },
-                        {
-                            content: 'Hello World send', 
-                            timestamp: '4h01'
-                        }
-                    ]
-                },
-                {
-                    avatar: 'https://i.pinimg.com/736x/fa/02/02/fa0202572e8aa734cedb154c413a4846.jpg',
-                    sender: 'me',
-                    messages: [
-                        {
-                            content: 'Hello World ok', 
-                            timestamp: '4h00'
-                        },
-                        {
-                            content: 'Hello World send Hello World send Hello World send Hello World send Hello World send Hello World send', 
-                            timestamp: '4h01'
-                        }
-                        ,
-                        {
-                            content: 'Hello World send', 
-                            timestamp: '4h01'
-                        },
-                        {
-                            content: 'Hello World send', 
-                            timestamp: '4h01'
-                        }
-                    ]
-                },
-                {
-                    avatar: 'https://i.pinimg.com/736x/fa/02/02/fa0202572e8aa734cedb154c413a4846.jpg',
-                    sender: 'user1',
-                    messages: [
-                        {
-                            content: 'Hello World ok', 
-                            timestamp: '4h00'
-                        },
-                        {
-                            content: 'Hello World send', 
-                            timestamp: '4h01'
-                        }
-                    ]
-                },
-                {
-                    avatar: 'https://i.pinimg.com/736x/fa/02/02/fa0202572e8aa734cedb154c413a4846.jpg',
-                    sender: 'me',
-                    messages: [
-                        {
-                            content: 'Hello World ok', 
-                            timestamp: '4h00'
-                        },
-                        {
-                            content: 'Hello World send', 
-                            timestamp: '4h01'
-                        }
-                        ,
-                        {
-                            content: 'Hello World send', 
-                            timestamp: '4h01'
-                        },
-                        {
-                            content: 'Hello World send', 
-                            timestamp: '4h01'
-                        }
-                    ]
-                },
-                {
-                    avatar: 'https://i.pinimg.com/736x/fa/02/02/fa0202572e8aa734cedb154c413a4846.jpg',
-                    sender: 'user1',
-                    messages: [
-                        {
-                            content: 'Hello World ok', 
-                            timestamp: '4h00'
-                        },
-                        {
-                            content: 'Hello World send', 
-                            timestamp: '4h01'
-                        }
-                    ]
-                },
-                {
-                    avatar: 'https://i.pinimg.com/736x/fa/02/02/fa0202572e8aa734cedb154c413a4846.jpg',
-                    sender: 'me',
-                    messages: [
-                        {
-                            content: 'Hello World ok', 
-                            timestamp: '4h00'
-                        },
-                        {
-                            content: 'Hello World send', 
-                            timestamp: '4h01'
-                        }
-                        ,
-                        {
-                            content: 'Hello World send', 
-                            timestamp: '4h01'
-                        },
-                        {
-                            content: 'Hello World send', 
-                            timestamp: '4h01'
-                        }
-                    ]
-                }
-                
-        ]
+        //this.chatHistory = this.$store.state.chatHistory
     }
 }
 </script>
 
 <style>
 #my__wrap--history {
-    height: calc(100vh - 160px);
+    height: calc(100vh - 210px);
 }
 
 #list__message {
