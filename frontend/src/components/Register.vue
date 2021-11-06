@@ -3,6 +3,7 @@
       <i class='bx bxs-user text-gray-500 text-sm pr-2'></i>
       <input type="text" class="outline-none" placeholder="Họ tên" v-model="user.fullName">
   </div>
+  <div class="text-red-500 ml-1 hidden" v-if="user.fullName.length < 5 || user.length > 30">Họ tên phải chứa 5 đến 30 ký tự</div>
   <div class="pt-5 pb-1 border-b mb-2">
       <i class='bx bx-mobile-alt text-gray-500 text-sm pr-2'></i>
       <input type="text" class="outline-none" placeholder="Email hoặc số điện thoại" v-model="user.email">
@@ -32,16 +33,25 @@ export default {
   data() {
     return {
       user: {
-        'fullName': '',
-        'email': '',
-        'password': '',
-        'repassword': ''
+        fullName: '',
+        email: '',
+        password: '',
+        repassword: ''
       }
     }
   },
   methods: {
-    register() {
-      console.log(this.user)
+    async register() {
+      const response = await fetch('http://localhost:8080/api/v1/users', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.user)
+      }) 
+      const data = await response.json()
+      console.log(data)
     }
   }
 }
