@@ -3,6 +3,7 @@ package com.nguyenhuuvu.backend.config.exception;
 import com.nguyenhuuvu.backend.dto.BaseResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
@@ -26,7 +27,7 @@ public class GlobalHandleException {
         });
         return new ResponseEntity<>(
             new BaseResponse<Map<String, String>>().builder()
-                .status(HttpStatus.OK.value())
+                .status(HttpStatus.BAD_REQUEST.value())
                 .message("Validate exception!")
                 .timeStamp(new Date())
                 .data(errors)
@@ -49,6 +50,21 @@ public class GlobalHandleException {
         );
     }
 
+    @ExceptionHandler(MyException.class)
+    public ResponseEntity<?> myException(MyException e) {
+        e.printStackTrace();
+        return new ResponseEntity<> (
+                new BaseResponse<Exception>().builder()
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .message(e.getMessage())
+                        .timeStamp(new Date())
+                        .data(e.getUser())
+                        .build(),
+                HttpStatus.BAD_REQUEST
+        );
+    }
+
+
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<?> notFound(UsernameNotFoundException e) {
         return new ResponseEntity<>(
@@ -68,6 +84,18 @@ public class GlobalHandleException {
                 new BaseResponse<Exception>().builder()
                         .status(HttpStatus.NOT_ACCEPTABLE.value())
                         .message("User is disabled")
+                        .timeStamp(new Date())
+                        .build(),
+                HttpStatus.NOT_ACCEPTABLE
+        );
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<?> bodyNull(HttpMessageNotReadableException e) {
+        return new ResponseEntity<>(
+                new BaseResponse<Exception>().builder()
+                        .status(HttpStatus.NOT_ACCEPTABLE.value())
+                        .message("Missing body!")
                         .timeStamp(new Date())
                         .build(),
                 HttpStatus.NOT_ACCEPTABLE

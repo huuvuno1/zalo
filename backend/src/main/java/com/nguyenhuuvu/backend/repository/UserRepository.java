@@ -4,6 +4,9 @@ import com.nguyenhuuvu.backend.document.User;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.List;
+
 public interface UserRepository extends MongoRepository<User, ObjectId> {
-    User findUserByEmail(String email);
+    User findFirstByEmail(String email);
+    List<User> findUsersByEmail(String email);
 }

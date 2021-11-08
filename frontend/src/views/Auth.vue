@@ -31,8 +31,11 @@
 
         <!-- form type -->
         <div class="px-4 pb-1">
+            <div class="mt-3 font-bold text-blue-700 text-base text-center">
+                {{ message }}
+            </div>
             <login v-if="isLogin" />
-            <register v-else />
+            <register v-else @registered="togglePage(), message = 'Đăng ký thành công, bạn có thể đăng nhập!'" />
         </div>
     </div>
 </div>
@@ -46,7 +49,8 @@ import Register from '@/components/Register.vue'
 export default {
     data() {
         return {
-            isLogin: false
+            isLogin: false,
+            message: ''
         }
     },
     computed: {
@@ -65,6 +69,7 @@ export default {
         togglePage() {
             if (this.isLogin) {
                 this.$router.push({name: 'Register'})
+                this.message = ''
             }
             else {
                 this.$router.push({name: 'Login'})

@@ -63,7 +63,7 @@ public class JwtTokenUtil {
     }
 
     public String generateToken(String username) {
-        com.nguyenhuuvu.backend.document.User user = userRepository.findUserByEmail(username);
+        com.nguyenhuuvu.backend.document.User user = userRepository.findFirstByEmail(username);
         String authorities = user.getRoles().stream()
                 .collect(Collectors.joining(","));
         return doGenerateToken(username, authorities);
