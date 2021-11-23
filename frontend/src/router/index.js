@@ -5,7 +5,7 @@ const routes = [
     path: '/',
     alias: '/chat',
     name: 'Home',
-    component: () => import('../views/Home.vue'),
+    component: () => import('../views/Auth.vue'),
   },
   {
     path: '/chat/:id',
