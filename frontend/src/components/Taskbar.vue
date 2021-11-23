@@ -8,22 +8,22 @@
         <!-- menu -->
         <div class="flex flex-col w-full items-center cursor-pointer">
             <!-- message -->
-            <div class="h-16 w-full text-center pt-4 hover:bg-blue-400 bg-blue-600">
+            <div class="h-16 w-full text-center pt-4 hover:bg-blue-400" :class="{'bg-blue-600': item_selected == 1}">
                 <i class='bx bxs-message-rounded-detail text-3xl text-white'></i>
             </div>
 
             <!-- danh ba -->
-            <div class="h-16 w-full text-center pt-4 hover:bg-blue-400">
+            <div class="h-16 w-full text-center pt-4 hover:bg-blue-400" :class="{'bg-blue-600': item_selected == 2}">
                 <i class='bx bxs-contact text-3xl text-white'></i>
             </div>
 
             <!-- chuong -->
-            <div class="h-16 w-full text-center pt-4 hover:bg-blue-400">
+            <div class="h-16 w-full text-center pt-4 hover:bg-blue-400" :class="{'bg-blue-600': item_selected == 3}">
                 <i class='bx bx-bell text-3xl text-white'></i>
             </div>
 
             <!-- note -->
-            <div class="h-16 w-full text-center pt-4 hover:bg-blue-400">
+            <div class="h-16 w-full text-center pt-4 hover:bg-blue-400" :class="{'bg-blue-600': item_selected == 4}">
                 <i class='bx bx-notepad text-3xl text-white'></i>
             </div>
         </div>
@@ -33,7 +33,12 @@
 
 <script>
 export default {
-
+    name: 'TaskBar',
+    data() {
+        return {
+            item_selected: 1
+        }
+    }
 }
 </script>
 

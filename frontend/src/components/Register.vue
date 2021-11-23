@@ -11,6 +11,8 @@
       <input type="text" class="outline-none" placeholder="Email hoặc số điện thoại" 
         v-model="user.email"
         @input="checkEmail">
+      <!-- loading -->
+      <i class="text-red-500 cursor-pointer select-none text-sm absolute right-0 bottom-2 animate-spin bx bx-loader-circle" :class="{'hidden': !loadingSendVerify}"></i>
       <span class="text-red-500 cursor-pointer select-none text-xs absolute right-0 bottom-2" 
         :class="[user.email.length > 0 ? '' : 'hidden']" @click="requestVerifyMail">{{ textRequestMail }}</span>
   </div>
@@ -42,7 +44,11 @@
     {{ userError.repassword }}
   </div>
   <div>
-      <button class="bg-[#0190f3] w-full mt-4 h-11 text-white rounded mb-2 font-bold" @click="register">Đăng ký</button>
+      <button class="bg-[#0190f3] w-full mt-4 h-11 text-white rounded mb-2 font-bold" @click="register">
+        <!-- loading -->
+        <i class="text-white select-none text-lg animate-spin bx bx-loader-circle" :class="{'hidden': !loadingRegister}"></i>
+        Đăng ký
+      </button>
   </div>
   <p class="text-center m-4">
       <a href="#">Quên mật khẩu?</a>
@@ -55,6 +61,7 @@ export default {
   mounted() {
     document.title = this.$route.meta.title
   },
+  emits: ['registered'],
   data() {
     return {
       user: {
@@ -72,7 +79,9 @@ export default {
       verifying: false,
       code: '',
       verifyEror: false,
-      textRequestMail: 'Lấy mã'
+      textRequestMail: 'Lấy mã',
+      loadingSendVerify: false,
+      loadingRegister: false
     }
   },
   methods: {
@@ -97,8 +106,10 @@ export default {
 
       // block spam
       this.textRequestMail = ''
+      this.loadingSendVerify = true
       setTimeout(() => {
         this.textRequestMail = 'Lấy mã'
+        this.loadingSendVerify = false
       }, 15000)
 
       this.verifying = true
@@ -144,21 +155,26 @@ export default {
         this.userError.repassword = 'Mật khẩu không khớp với ô trên!'
         return
       }
-      const response = await fetch('http://localhost:8080/api/v1/users', {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.user)
-      }) 
-      const data = await response.json()
-      if (data.status != 200) {
-        this.userError = data.data
-      } else {
-        this.$emit('registered')
+      this.loadingRegister = true
+      try {
+        const response = await fetch('http://localhost:8080/api/v1/users', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.user)
+        }) 
+        const data = await response.json()
+        if (data.status != 200) {
+          this.userError = data.data
+        } else {
+          this.$emit('registered')
+        }
+      } catch(e) {
+        console.log(e)
       }
-      console.log(data)
+      this.loadingRegister = false 
     }
   }
 }

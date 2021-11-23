@@ -15,4 +15,6 @@ public class Constant {
     public static final String CODE_EXPIRED = "Mã code đã hết hạn, hãy yêu cầu mã mới!";
     public static final String CODE_OVER_LIMIT_WARNING = "Code không hợp lệ!";
     public static final String DUPLICATE_EMAIL = "Email đã được sử dụng!";
+    public static final String AUTH_FAIL = "Tài khoản hoặc mật khẩu sai";
+    public static final String VALIDATE_EXCEPTION = "Vui lòng nhập đủ thông tin!";
 }

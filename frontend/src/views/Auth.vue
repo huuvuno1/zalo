@@ -58,8 +58,20 @@ export default {
             return this.isLogin ? 'Đăng nhập' : 'Đăng ký'
         }
     },
-    mounted() {
+    async mounted() {
         this.isLogin = this.$route.name === "Login"
+        try {
+        const response = await fetch('http://localhost:8080/api/v1/users/authentication', {
+          method: 'POST',
+          credentials: 'include'
+        }) 
+        const data = await response.json()
+        if (data.status == 200) {
+            location.href = "/"
+        }
+      } catch(e) {
+        console.log(e)
+      }
     },
     components: {
         Login,

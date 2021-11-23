@@ -4,7 +4,7 @@
         
     <div class="flex-1 border-b border-gray-300 flex items-center relative" id="test__parent">
         <i class='bx bx-search mr-2 cursor-pointer'></i>
-        <input type="text" placeholder="Tìm kiếm" id="txtSearch" class="outline-none flex-1" v-model="txtSearch" @input="event => txtSearch = event.target.value">
+        <input autocomplete="none" type="text" placeholder="Tìm kiếm" id="txtSearch" class="outline-none flex-1" v-model="txtSearch" @input="event => txtSearch = event.target.value">
         <span class="my__close" :class="[txtSearch === '' ? 'hidden' : 'block']" @click="txtSearch = ''">x</span>
         <div class="absolute top-7 left-0 right-0 bg-white shadow-2xl w-full p-1 z-50 border rounded-md" :class="[txtSearch === '' ? 'hidden' : '']"> 
             <h1 class="font-bold border-gray-200 border-b my-2 ml-1">Kết quả tìm kiếm</h1>

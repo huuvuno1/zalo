@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
@@ -45,7 +46,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody JwtRequest user) {
+    public ResponseEntity<?> createAuthenticationToken(@Valid @RequestBody JwtRequest user, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 user.getEmail(), user.getPassword()
         );
@@ -59,14 +60,38 @@ public class AuthController {
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtTokenUtil.generateToken(authentication);
+        Cookie cookie = new Cookie("token", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(60*60*24*30);
+        response.addCookie(cookie);
         return new ResponseEntity<>(
             new BaseResponse<String>().builder()
                     .status(HttpStatus.OK.value())
                     .message("Success!")
-                    .data(token)
+                    .data("token nè")
                     .build(),
                 HttpStatus.OK
         );
+    }
+
+    @PostMapping("/authentication")
+    public ResponseEntity<?> login(@CookieValue(name = "token") String token) {
+        if (!jwtTokenUtil.isTokenExpired(token)) {
+            return new ResponseEntity<>(new BaseResponse<String>().builder()
+                    .status(200)
+                    .message("Authentication success!")
+                    .timeStamp(new Date())
+                    .build(),
+                    HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new BaseResponse<String>().builder()
+                .status(400)
+                .message("Authentication fail!")
+                .timeStamp(new Date())
+                .build(),
+            HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/verification")

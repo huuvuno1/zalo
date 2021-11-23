@@ -29,7 +29,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (cookie != null) {
             requestToken = cookie.getValue();
         }
-        String email = null;
         boolean expire = true;
 
         if (requestToken != null) {

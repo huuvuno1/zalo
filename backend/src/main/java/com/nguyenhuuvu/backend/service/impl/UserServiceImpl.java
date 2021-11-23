@@ -3,6 +3,7 @@ package com.nguyenhuuvu.backend.service.impl;
 import com.nguyenhuuvu.backend.config.exception.MyException;
 import com.nguyenhuuvu.backend.document.User;
 import com.nguyenhuuvu.backend.document.VerifyInfo;
+import com.nguyenhuuvu.backend.dto.SearchQuery;
 import com.nguyenhuuvu.backend.dto.UserDTO;
 import com.nguyenhuuvu.backend.repository.UserRepository;
 import com.nguyenhuuvu.backend.service.EmailService;
@@ -10,12 +11,12 @@ import com.nguyenhuuvu.backend.service.UserService;
 import com.nguyenhuuvu.backend.utils.Constant;
 import com.nguyenhuuvu.backend.utils.DateTimeUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.MethodParameter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -104,6 +105,22 @@ public class UserServiceImpl implements UserService {
                 throw new MyException(Constant.CODE_OVER_LIMIT_WARNING);
             }
         }
+    }
+
+    @Override
+    public List<UserDTO> find(SearchQuery<String> query) {
+        // missing pagation
+        List<User> users = userRepository.findUsersByEmailOrFullNameContains(query.getData(), query.getData());
+        List<UserDTO> result = new ArrayList<>();
+        users.forEach(user -> {
+            UserDTO u = new UserDTO().builder()
+                            .email(user.getEmail())
+                            .fullName(user.getFullName())
+                            .avatar(user.getAvatar())
+                            .build();
+            result.add(u);
+        });
+        return result;
     }
 
 
