@@ -113,7 +113,7 @@ export default {
       }, 15000)
 
       this.verifying = true
-      const response = await fetch('http://localhost:8080/api/v1/users/verification', {
+      const response = await fetch('http://nguyenhuuvu.com:8080/api/v1/users/verification', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -127,7 +127,7 @@ export default {
     async verifyMail() {
       if (this.code.length == 6) {
         this.verifyEror = false
-        const response = await fetch('http://localhost:8080/api/v1/users/verification/code', {
+        const response = await fetch('http://nguyenhuuvu.com:8080/api/v1/users/verification/code', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -157,7 +157,7 @@ export default {
       }
       this.loadingRegister = true
       try {
-        const response = await fetch('http://localhost:8080/api/v1/users', {
+        const response = await fetch('http://nguyenhuuvu.com:8080/api/v1/users', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',

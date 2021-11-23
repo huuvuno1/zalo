@@ -47,7 +47,7 @@ export default {
     async login() {
       this.buttonLoading = true
       try {
-      const response = await fetch('http://localhost:8080/api/v1/users/auth', {
+      const response = await fetch('http://nguyenhuuvu.com:8080/api/v1/users/auth', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
