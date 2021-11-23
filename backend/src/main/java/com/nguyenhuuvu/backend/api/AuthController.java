@@ -27,7 +27,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
-@CrossOrigin(origins = "http://localhost:4000", allowCredentials = "true")
+@CrossOrigin(origins = "http://nguyenhuuvu.com", allowCredentials = "true")
 public class AuthController {
     final UserService userService;
     final JwtTokenUtil jwtTokenUtil;
