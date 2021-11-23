@@ -58,7 +58,7 @@ export default {
         });
         const data = await response.json()
         if (data.status == 200) {
-          location.href = '/'
+          location.href = '/chat/1'
         } else {
           this.textLoginError = data.message
         }
